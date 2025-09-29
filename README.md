@@ -74,13 +74,49 @@ public/
 
 ## 🚀 Deployment
 
-This project is optimized for static hosting and can be deployed to platforms like:
-- Vercel
-- Netlify
-- GitHub Pages
-- Any static hosting service
+### Automatic Deployment
+This project automatically builds and deploys on every push to the `main` branch:
 
-Build the project with `pnpm build` and deploy the `dist/` folder.
+- **GitHub Pages**: Live site at `https://codata.github.io/codata-www-starter/`
+- **Built Files**: Available in the `gh-pages` branch for custom hosting
+
+### Custom nginx/Apache Hosting
+To deploy to your own web server:
+
+```bash
+# Clone the built files from gh-pages branch
+git clone -b gh-pages https://github.com/codata/codata-www-starter.git /tmp/codata-dist
+
+# Copy to your web server directory
+sudo cp -r /tmp/codata-dist/* /var/www/html/
+sudo chown -R www-data:www-data /var/www/html/
+
+# Cleanup
+rm -rf /tmp/codata-dist
+```
+
+### Manual Build
+```bash
+git clone https://github.com/codata/codata-www-starter.git
+cd codata-www-starter
+pnpm install
+pnpm build
+# Deploy the dist/ folder to your hosting service
+```
+
+### Deployment Script
+Use the included `deploy.sh` script for automated deployment to nginx:
+```bash
+./deploy.sh /var/www/html
+```
+
+## 🔄 CI/CD Pipeline
+
+The project uses GitHub Actions to:
+- ✅ Build on every push and PR
+- ✅ Deploy to GitHub Pages automatically
+- ✅ Create `gh-pages` branch with built files
+- ✅ Enable easy deployment to custom servers
 
 ## 📧 Contact
 
