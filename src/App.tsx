@@ -3,7 +3,7 @@ import { OrbitControls, useVideoTexture, Html } from '@react-three/drei'
 import { Suspense } from 'react'
 
 function VideoScreen() {
-  const texture = useVideoTexture("/codata.mp4", {
+  const texture = useVideoTexture("./codata.mp4", {
     muted: true,
     loop: true,
     start: true
