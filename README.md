@@ -80,12 +80,12 @@ This project automatically builds and deploys on every push to the `main` branch
 - **GitHub Pages**: Live site at `https://codata.github.io/codata-www-starter/`
 - **Built Files**: Available in the `gh-pages` branch for custom hosting
 
-### Custom nginx/Apache Hosting
-To deploy to your own web server:
+### Custom nginx/Apache Hosting (Root Domain)
+To deploy to your own web server at root domain:
 
 ```bash
-# Clone the built files from gh-pages branch
-git clone -b gh-pages https://github.com/codata/codata-www-starter.git /tmp/codata-dist
+# Clone the built files from gh-pages-root branch (optimized for root domain)
+git clone -b gh-pages-root https://github.com/codata/codata-www-starter.git /tmp/codata-dist
 
 # Copy to your web server directory
 sudo cp -r /tmp/codata-dist/* /var/www/html/
@@ -95,17 +95,30 @@ sudo chown -R www-data:www-data /var/www/html/
 rm -rf /tmp/codata-dist
 ```
 
+### GitHub Pages Deployment
+For GitHub Pages (subdirectory hosting):
+```bash
+# Use the gh-pages branch (optimized for GitHub Pages)
+git clone -b gh-pages https://github.com/codata/codata-www-starter.git /tmp/codata-gh-pages
+```
+
 ### Manual Build
 ```bash
 git clone https://github.com/codata/codata-www-starter.git
 cd codata-www-starter
 pnpm install
-pnpm build
+
+# Build for root domain
+VITE_BASE_PATH="/" pnpm build
+
+# OR build for subdirectory
+VITE_BASE_PATH="/your-subdirectory/" pnpm build
+
 # Deploy the dist/ folder to your hosting service
 ```
 
 ### Deployment Script
-Use the included `deploy.sh` script for automated deployment to nginx:
+Use the included `deploy.sh` script for automated deployment to nginx (uses root-optimized build):
 ```bash
 ./deploy.sh /var/www/html
 ```
@@ -114,9 +127,10 @@ Use the included `deploy.sh` script for automated deployment to nginx:
 
 The project uses GitHub Actions to:
 - ✅ Build on every push and PR
-- ✅ Deploy to GitHub Pages automatically
-- ✅ Create `gh-pages` branch with built files
-- ✅ Enable easy deployment to custom servers
+- ✅ Deploy to GitHub Pages automatically  
+- ✅ Create `gh-pages` branch (for GitHub Pages hosting)
+- ✅ Create `gh-pages-root` branch (for root domain hosting)
+- ✅ Enable easy deployment to any hosting scenario
 
 ## 📧 Contact
 

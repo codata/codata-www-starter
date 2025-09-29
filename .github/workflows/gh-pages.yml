@@ -33,16 +33,34 @@ jobs:
     - name: Install dependencies
       run: pnpm install
 
-    - name: Build project
-      run: pnpm build
+    - name: Build for GitHub Pages
+      run: |
+        # Build with GitHub Pages base path
+        VITE_BASE_PATH="/codata-www-starter/" pnpm build
+        mv dist dist-github-pages
 
-    - name: Deploy to gh-pages branch
+    - name: Build for Root Domain
+      run: |
+        # Build with root base path
+        VITE_BASE_PATH="/" pnpm build
+        mv dist dist-root
+
+    - name: Deploy to gh-pages branch (GitHub Pages build)
       if: github.ref == 'refs/heads/main'
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist
+        publish_dir: ./dist-github-pages
         publish_branch: gh-pages
+        force_orphan: true
+
+    - name: Deploy to gh-pages-root branch (Root domain build)
+      if: github.ref == 'refs/heads/main'
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./dist-root
+        publish_branch: gh-pages-root
         force_orphan: true
         
     - name: Setup Pages
@@ -53,7 +71,7 @@ jobs:
       if: github.ref == 'refs/heads/main'
       uses: actions/upload-pages-artifact@v3
       with:
-        path: './dist'
+        path: './dist-github-pages'
 
     - name: Deploy to GitHub Pages
       if: github.ref == 'refs/heads/main'
