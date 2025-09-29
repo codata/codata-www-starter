@@ -1,14 +1,6 @@
 # CODATA Website Landing Page
 
-A 3D interactive landing page for the CODATA (Committee on Data of the International Science Council) website, currently under construction. This project showcases an immersive video experience built with React Three Fiber.
-
-## 🌐 About CODATA
-
-CODATA is the Committee on Data of the International Science Council (ISC). CODATA exists to promote global collaboration to advance open science and to improve the availability and usability of data for all areas of research.
-
-## 🚧 Project Status
-
-This landing page is currently **under construction** and serves as a temporary interactive experience while the main CODATA website is being developed.
+A 3D interactive landing page that can be used for any CODATA website under construction. This project showcases an immersive video experience built with React Three Fiber.
 
 ## ✨ Features
 
@@ -69,6 +61,7 @@ public/
 
 ## � Links
 
+- [Website on GitHub Pages](https://codata.github.io/codata-www-starter/)
 - [CODATA Official Website](https://codata.org/)
 - [International Science Council](https://council.science/)
 
@@ -78,7 +71,7 @@ public/
 This project automatically builds and deploys on every push to the `main` branch:
 
 - **GitHub Pages**: Live site at `https://codata.github.io/codata-www-starter/`
-- **Built Files**: Available in the `gh-pages` branch for custom hosting
+- **Built Files**: Available in the `gh-pages-root` (hosted under /) and `gh-pages` (hosted under /codata-www-starter) branches for custom hosting
 
 ### Custom nginx/Apache Hosting (Root Domain)
 To deploy to your own web server at root domain:
@@ -132,6 +125,3 @@ The project uses GitHub Actions to:
 - ✅ Create `gh-pages-root` branch (for root domain hosting)
 - ✅ Enable easy deployment to any hosting scenario
 
-## 📧 Contact
-
-For questions about CODATA or this landing page, please visit [codata.org](https://codata.org/) for official contact information.
