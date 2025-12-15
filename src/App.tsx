@@ -1,13 +1,22 @@
 import { Canvas, useThree } from '@react-three/fiber'
 import { OrbitControls, useVideoTexture, Html } from '@react-three/drei'
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense, useEffect, useMemo, useState } from 'react'
 import { TOUCH } from 'three'
 
 function VideoScreen() {
   const { viewport } = useThree()
   const [dimensions, setDimensions] = useState({ width: 4, height: 2.25 })
   
-  const texture = useVideoTexture("./codata.mp4", {
+  // Choose video source based on domain; default to codata.mp4
+  const videoSrc = useMemo(() => {
+    const host = typeof window !== 'undefined' ? window.location.hostname : ''
+    if (host && host.toLowerCase().includes('cdif.org')) {
+      return './cdif.mp4'
+    }
+    return './codata.mp4'
+  }, [])
+  
+  const texture = useVideoTexture(videoSrc, {
     muted: true,
     loop: true,
     start: true
