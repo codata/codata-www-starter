@@ -10,7 +10,11 @@ function VideoScreen() {
   // Choose video source based on domain; default to codata.mp4
   const videoSrc = useMemo(() => {
     const host = typeof window !== 'undefined' ? window.location.hostname : ''
-    if (host && host.toLowerCase().includes('cdif.org')) {
+    const search = typeof window !== 'undefined' ? window.location.search : ''
+    const params = new URLSearchParams(search)
+    const forceCdif = params.get('site') === 'cdif' || params.get('cdif') === '1'
+    const isCdifDomain = host && host.toLowerCase().includes('cdif.org')
+    if (isCdifDomain || forceCdif) {
       return './cdif.mp4'
     }
     return './codata.mp4'
@@ -68,6 +72,49 @@ function LoadingFallback() {
   )
 }
 
+function LearnMoreLink() {
+  const { viewport } = useThree()
+  // Determine if we should show the link (cdif.org or local override)
+  const host = typeof window !== 'undefined' ? window.location.hostname : ''
+  const params = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams()
+  const forceCdif = params.get('site') === 'cdif' || params.get('cdif') === '1'
+  const isCdifDomain = host && host.toLowerCase().includes('cdif.org')
+  if (!(isCdifDomain || forceCdif)) return null
+
+  // Compute the same video height to place the link just below the plane
+  const aspectRatio = 16 / 9
+  const viewportAspect = viewport.width / viewport.height
+  let width: number, height: number
+  if (viewportAspect > aspectRatio) {
+    height = viewport.height * 0.6
+    width = height * aspectRatio
+  } else {
+    width = viewport.width * 0.8
+    height = width / aspectRatio
+  }
+  const yBelow = -(height / 2) - 0.12 // 0.12 units margin below video
+  const fontSize = Math.max(viewport.width * 0.015, 5) // Smaller scaling
+
+  return (
+    <Html position={[0, yBelow, 0]} transform>
+      <a
+        href="https://book.cdif.org"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          color: '#28435dff',
+          textDecoration: 'none',
+          fontFamily: 'Arial, sans-serif',
+          fontSize: `${fontSize}px`,
+          whiteSpace: 'nowrap'
+        }}
+      >
+        Learn more
+      </a>
+    </Html>
+  )
+}
+
 function App() {
   return (
     <Canvas 
@@ -93,6 +140,7 @@ function App() {
       />
       <Suspense fallback={<LoadingFallback />}>
         <VideoScreen />
+        <LearnMoreLink />
       </Suspense>
     </Canvas>
   )
